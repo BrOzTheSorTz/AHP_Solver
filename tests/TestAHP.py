@@ -6,8 +6,7 @@ from models import AHP
 class TestAHP(unittest.TestCase):
 
     def setUp(self):
-        # Crea un archivo de prueba CSV para cargar en la clase
-        self.test_criterios_path = '../data/criterios.csv'
+
 
         # Datos que esperamos que contenga la matriz, para comparar
         self.expected_matrix = np.array([
@@ -16,10 +15,10 @@ class TestAHP(unittest.TestCase):
             [1 / 7, 1 / 3, 1, 3],
             [1 / 8, 1 / 6, 1 / 3, 1]
         ])
-
-    def test_criterios_loading(self):
+        self.alternatives_matrix = np.array([[[1,8,6],[1/8,1,1/3],[1/6,3,1]],[[1,5,1/3],[1/5,1,1/7],[3,7,1]]])
+    def test_criterios_alternatives_loading(self):
         # Instancia de la clase AHP usando el archivo de prueba
-        ahp_instance = AHP(criterios_path=self.test_criterios_path)
+        ahp_instance = AHP()
 
         # Verifica que self.criterios tenga los valores esperados
         np.testing.assert_array_almost_equal(
@@ -29,6 +28,10 @@ class TestAHP(unittest.TestCase):
             err_msg="La matriz 'criterios' no coincide con los valores esperados"
         )
 
+        np.testing.assert_array_almost_equal(
+            ahp_instance.alternativas,
+            self.alternatives_matrix
+        )
 
 
 

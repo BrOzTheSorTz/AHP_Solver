@@ -1,24 +1,48 @@
-import sympy
 import numpy as np
 
-
 class Eigenvalue:
-    def __init__(self, matrix, num):
+    def __init__(self):
+
+        self.columns = None
+        self.rows = None
+        self.matrix = None
+        self.eigenvalue = None
+        self.eigenvector = None
+        self.priority_vector = None
+
+    def max_nonnegative_eigenvalue(self,matrix):
         """
-        :param matrix: a numpy matrix
-        :param num:
+        Finds the largest non-negative, real eigenvalue and corresponding eigenvector.
         """
         self.matrix = matrix
-        self.rows = num
-        self.columns = num
+        self.rows = np.shape(matrix)[0]
+        self.columns = np.shape(matrix)[1]
 
-    def run(self):
-        """
+        eigenvalues, eigenvectors = np.linalg.eig(self.matrix)
 
-        :return: Autovalor más grande no negativo y no imaginario
+        # Filtrar autovalores no negativos y reales junto con sus eigenvectores correspondientes
+        real_non_negative_eigenvalues = [(value.real, eigenvectors[:, i])
+                                         for i, value in enumerate(eigenvalues)
+                                         if value.imag == 0 and value.real >= 0]
+
+        # Encontrar el mayor autovalor no negativo real
+        if real_non_negative_eigenvalues:
+            self.eigenvalue, self.eigenvector = max(real_non_negative_eigenvalues, key=lambda x: x[0])
+        else:
+            self.eigenvalue = None
+            self.eigenvector = None
+
+    def obtain_eigenvector_normalized(self,matrix):
         """
-        eigenvalues = np.linalg.eigvals(self.matrix)
-        # Filtrar autovalores no negativos y reales
-        real_non_negative = [value.real for value in eigenvalues if value.imag == 0 and value.real >= 0]
-        # Retornar el mayor valor de la lista filtrada
-        return max(real_non_negative) if real_non_negative else None
+        Normalizes the principal eigenvector to obtain the priority vector (sums to 1).
+        """
+        # Primero, calcular el mayor eigenvalor no negativo y su vector correspondiente
+        self.max_nonnegative_eigenvalue(matrix)
+        if self.eigenvector is not None:
+            # Normalizar el eigenvector principal para obtener el vector de prioridades
+            self.priority_vector = self.eigenvector / self.eigenvector.sum()
+            print("Priority vector (normalized):", self.priority_vector)
+            return self.priority_vector
+        else:
+            print("No suitable eigenvalue found for priority calculation.")
+            return None
