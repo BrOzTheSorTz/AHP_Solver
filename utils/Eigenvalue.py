@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class Eigenvalue:
     def __init__(self):
 
@@ -10,7 +11,7 @@ class Eigenvalue:
         self.eigenvector = None
         self.priority_vector = None
 
-    def max_nonnegative_eigenvalue(self,matrix):
+    def max_nonnegative_eigenvalue(self, matrix):
         """
         Finds the largest non-negative, real eigenvalue and corresponding eigenvector.
         """
@@ -32,7 +33,7 @@ class Eigenvalue:
             self.eigenvalue = None
             self.eigenvector = None
 
-    def obtain_eigenvector_normalized(self,matrix):
+    def obtain_eigenvector_normalized(self, matrix):
         """
         Normalizes the principal eigenvector to obtain the priority vector (sums to 1).
         """
@@ -42,7 +43,7 @@ class Eigenvalue:
             # Normalizar el eigenvector principal para obtener el vector de prioridades
             self.priority_vector = self.eigenvector / self.eigenvector.sum()
             print("Priority vector (normalized):", self.priority_vector)
-            return self.priority_vector
+            return self.eigenvalue,self.priority_vector
         else:
             print("No suitable eigenvalue found for priority calculation.")
             return None
