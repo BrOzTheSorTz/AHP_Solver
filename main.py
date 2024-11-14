@@ -1,14 +1,23 @@
 from flask import Flask, request, render_template, redirect, url_for
 import numpy as np
 import pandas as pd
-from models import AHPAutovalores
+from models import AHPAutovalores,AHPAproximado, AHPMediaGeometrica, AHPBase
 
 app = Flask(__name__)
 
 
 # Función para procesar los archivos y calcular AHP
-def calcular_ahp(alternatives_path, criterios_path):
-    ahp_method = AHPAutovalores(criterios_path, alternatives_path)
+def calcular_ahp(alternatives_path, criterios_path, method='autovalores'):
+    ahp_method = AHPBase(criterios_path,alternatives_path)
+    if method == 'autovalores':
+        ahp_method = AHPAutovalores(criterios_path, alternatives_path)
+    elif method == 'aproximacion':
+        ahp_method = AHPAproximado(criterios_path, alternatives_path)
+    elif method == 'media_geometrica':
+        ahp_method = AHPMediaGeometrica(criterios_path, alternatives_path)
+    else:
+        return None,None
+
     ranking, info_consistencia = ahp_method.obtain_ranking()
 
     return ranking, info_consistencia
@@ -21,6 +30,7 @@ def index():
         # Obtener archivos cargados
         alt_file = request.files.get('alternatives')
         crit_file = request.files.get('criterios')
+        method = request.form['method']
 
         # Guardar temporalmente los archivos
         alt_path = './tmp/alternatives.csv'
@@ -29,7 +39,7 @@ def index():
         crit_file.save(crit_path)
 
         # Calcular AHP
-        ranking, info_consistencia = calcular_ahp(alt_path, crit_path)
+        ranking, info_consistencia = calcular_ahp(alt_path, crit_path, method)
         name_ranking = []
         i = 1
         for n in ranking:
@@ -38,7 +48,7 @@ def index():
             name_ranking.append([name_alternative, n])
         name_ranking_order = sort_alternatives(name_ranking)
         # Redirigir a la página de resultados con los datos calculados
-        return render_template('result.html', ranking=name_ranking_order, info=info_consistencia)
+        return render_template('result.html', ranking=name_ranking_order, info=info_consistencia,method=method)
 
     return render_template('index.html')
 
@@ -57,6 +67,7 @@ def sort_alternatives(name_ranking):
                 name_ranking[j], name_ranking[j + 1] = name_ranking[j + 1], name_ranking[j]
 
     return name_ranking
+
 
 # Ejecutar la aplicación
 if __name__ == '__main__':

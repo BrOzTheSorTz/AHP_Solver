@@ -1,6 +1,6 @@
 import csv
 import numpy as np
-from utils import Eigenvalue  # Asumo que tienes una clase `Eigenvalue` que usas en AHPAutovalores.
+from utils import Eigenvalue
 
 
 # Clase base para manejar la carga de datos CSV
@@ -96,12 +96,79 @@ class AHPAutovalores(AHPBase):
 # Clase hija para el método aproximado
 class AHPAproximado(AHPBase):
     def obtain_ranking(self):
-        # Implementar el método aproximado aquí
-        pass  # Reemplaza con lógica específica
+
+        # Obtener pesos de los criterios
+        weigths = []
+        sum_total = 0.0
+        print("CRITERIO ",self.num_criterios)
+        for i in range(0,self.num_criterios):
+            suma = sum(self.criterios[i])
+            weigths.append(suma)
+            sum_total = sum_total + suma
+
+        weigths_norm = [num/sum_total for num in weigths]
+        print(weigths_norm)
+        weigths_norm_criterios = np.array(weigths_norm)
+
+        # Obtener valores de las alternativas
+        alts_weigths = []
+        for alternativa in self.alternativas:
+            weigths = []
+            sum_total = 0.0
+            for i in range(0, self.num_alternativas):
+                suma = sum(alternativa[i])
+                weigths.append(suma)
+                sum_total = sum_total + suma
+
+            weigths_norm = [num / sum_total for num in weigths]
+            alts_weigths.append(weigths_norm)
+        alts_weigths = np.array(alts_weigths)
+
+        ranking = np.dot(np.transpose(alts_weigths), weigths_norm_criterios)
+        ranking = [round(float(n), 3) for n in ranking]
+
+        print(f"Ranking: {ranking}.")
+        return ranking, {}
+
 
 
 # Clase hija para el método de media geométrica
 class AHPMediaGeometrica(AHPBase):
     def obtain_ranking(self):
-        # Implementar el método de media geométrica aquí
-        pass  # Reemplaza con lógica específica
+        # Paso 1: Calcular media geométrica de los criterios
+        criterios_pesos = []
+        for i in range(self.num_criterios):
+            # Producto de todos los elementos en la fila
+            product = np.prod(self.criterios[i])
+            # Raíz enésima (media geométrica)
+            geometric_mean = product ** (1 / self.num_criterios)
+            criterios_pesos.append(geometric_mean)
+
+        # Paso 2: Normalizar los pesos de los criterios
+        suma_total_criterios = sum(criterios_pesos)
+        criterios_pesos_norm = np.array([peso / suma_total_criterios for peso in criterios_pesos])
+
+        # Paso 3: Calcular media geométrica de las alternativas
+        alts_pesos_normalizados = []
+        for alternativa in self.alternativas:
+            alt_pesos = []
+            for i in range(self.num_alternativas):
+                # Producto de todos los elementos en la fila
+                product = np.prod(alternativa[i])
+                # Raíz enésima (media geométrica)
+                geometric_mean = product ** (1 / self.num_alternativas)
+                alt_pesos.append(geometric_mean)
+
+            # Normalizar los pesos de cada matriz de alternativas
+            suma_total_alternativa = sum(alt_pesos)
+            alt_pesos_norm = [peso / suma_total_alternativa for peso in alt_pesos]
+            alts_pesos_normalizados.append(alt_pesos_norm)
+
+        alts_pesos_normalizados = np.array(alts_pesos_normalizados)
+
+        # Paso 4: Calcular el ranking final
+        ranking = np.dot(np.transpose(alts_pesos_normalizados), criterios_pesos_norm)
+        ranking = [round(float(n), 3) for n in ranking]
+
+        print(f"Ranking: {ranking}.")
+        return ranking, {}
