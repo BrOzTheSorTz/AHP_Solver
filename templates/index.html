@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Procesador AHP</title>
+    <!-- Agregar Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+            padding: 30px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #343a40;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .btn-primary {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Subir Archivos para Procesar AHP</h1>
+        <form action="/" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="alternatives">Archivo de Alternativas:</label>
+                <input type="file" id="alternatives" name="alternatives" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="criterios">Archivo de Criterios:</label>
+                <input type="file" id="criterios" name="criterios" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Procesar</button>
+        </form>
+    </div>
+
+    <!-- Agregar JavaScript de Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

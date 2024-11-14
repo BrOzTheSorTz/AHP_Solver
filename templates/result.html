@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Resultados AHP</title>
+    <!-- Agregar Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 700px;
+            margin-top: 50px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            font-weight: bold;
+            color: #343a40;
+        }
+        .table {
+            margin-top: 20px;
+        }
+        .btn-primary {
+            width: 100%;
+            margin-top: 20px;
+        }
+        /* Badge personalizada para hacer el ranking más visible */
+        .badge-large {
+            font-size: 1.5rem; /* Aumenta el tamaño de la fuente */
+            padding: 10px 20px; /* Añade espacio alrededor del texto */
+            background-color: #007bff; /* Color de fondo distintivo */
+            color: #fff; /* Color del texto */
+            border-radius: 20px; /* Bordes redondeados */
+            font-weight: bold; /* Texto en negrita */
+        }
+        .name_alternative{
+            font-size: 1.5rem; /* Aumenta el tamaño de la fuente */
+            padding: 10px 20px; /* Añade espacio alrededor del texto */
+            font-weight: bold; /* Texto en negrita */
+
+        }
+        /* Estilos para pantallas pequeñas */
+        @media (max-width: 768px) {
+            .container {
+                margin-top: 20px;
+                padding: 15px;
+            }
+            h1, h2 {
+                font-size: 1.5rem;
+            }
+            .badge {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Resultados de AHP</h1>
+
+        <!-- Ranking de Alternativas -->
+        <h2>Ranking de Alternativas</h2>
+        <ul class="list-group">
+            {% for nombre, valor in ranking %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span class="name_alternative">{{ nombre }}</span>
+                <span class="badge badge-primary badge-pill badge-large">{{ valor }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Información de Consistencia -->
+        <h2 class="mt-4">Información de Consistencia</h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Matriz</th>
+                        <th>Autovalor</th>
+                        <th>CI</th>
+                        <th>RI</th>
+                        <th>CR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, values in info.items() %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ values[0] }}</td>
+                        <td>{{ values[1] }}</td>
+                        <td>{{ values[2] }}</td>
+                        <td>{{ values[3] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Volver</a>
+    </div>
+
+    <!-- Agregar JavaScript de Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
