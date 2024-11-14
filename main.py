@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, request, render_template, redirect, url_for
 import numpy as np
 import pandas as pd
@@ -35,6 +37,8 @@ def index():
         # Guardar temporalmente los archivos
         alt_path = './tmp/alternatives.csv'
         crit_path = './tmp/criterios.csv'
+        # Ensure the directory exists
+        os.makedirs(os.path.dirname(alt_path), exist_ok=True)
         alt_file.save(alt_path)
         crit_file.save(crit_path)
 
