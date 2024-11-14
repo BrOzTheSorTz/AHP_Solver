@@ -1,14 +1,14 @@
 from flask import Flask, request, render_template, redirect, url_for
 import numpy as np
 import pandas as pd
-from models import AHP
+from models import AHPAutovalores
 
 app = Flask(__name__)
 
 
 # Función para procesar los archivos y calcular AHP
 def calcular_ahp(alternatives_path, criterios_path):
-    ahp_method = AHP(criterios_path, alternatives_path)
+    ahp_method = AHPAutovalores(criterios_path, alternatives_path)
     ranking, info_consistencia = ahp_method.obtain_ranking()
 
     return ranking, info_consistencia
