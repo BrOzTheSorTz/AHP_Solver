@@ -12,7 +12,7 @@ Puedes acceder en la web a [AHP Solver](https://thisisjosepablo3.pythonanywhere.
 
 ## Requisitos Previos
 
-1. **Python 3.x**: Asegúrate de tener instalado Python 3.x en tu sistema.
+1. **Python 3.10**: Asegúrate de tener instalado Python 3.10 en tu sistema.
 2. **Instalación de dependencias**: Instala Flask y Pandas, necesarios para ejecutar la aplicación.
 
 ### Instalación de Dependencias
@@ -41,7 +41,7 @@ AHP-Flask-App/
 2. **Ejecuta la aplicación** con el siguiente comando:
 
    ```bash
-   python app.py
+   python main.py
    ```
 
 3. **Abre un navegador web** y accede a `http://127.0.0.1:5000`.
